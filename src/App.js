@@ -12,24 +12,28 @@ class App extends Component {
   }
 
   search() {
-    const BASE_URL =
-      'https://en.wikipedia.org/w/api.php?action=query&titles=Main%20Page&prop=revisions&rvprop=content&format=json';
+    // const URL = `https://en.wikipedia.org/w/api.php?action=parse&format=json&origin=*&page=${this.state.query}&prop=text`
+    const URL = `https://en.wikipedia.org/w/api.php?action=query&format=json&titles=${this.state.query}&prop=revisions&rvprop=content&origin=*`
+    const BASE_URL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&generator=search&origin=*&gsrsearch=';
     let FETCH_URL = `${BASE_URL}${this.state.query}`;
 
-    //   fetch(FETCH_URL, {
-    //     mode: 'cors',
-    //     method: 'GET'
-    //   })
-    //     // .then(response => response.json())
-    //     .then(json1 => {
-    //       console.log('json1: ', json1);
-    //     });
-    // }
-
+      // fetch(URL, {
+       
+      //   method: 'GET'
+      // })
+      //   .then(response => {
+      //     console.log('response: ', response);
+      //   });
+    
+        
     axios
-      .get(FETCH_URL)
+      .get(URL)
       .then(function(response) {
-        console.log('response: ', response);
+        // console.log('response: ', response);
+        if (response.data) {
+          let articleBody = response.request.response;
+          console.log('articleBody: ', articleBody);
+        }
       })
       .catch(function(error) {
         console.log('error: ', error);
