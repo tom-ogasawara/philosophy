@@ -13,19 +13,19 @@ class App extends Component {
 
   search() {
     // const URL = `https://en.wikipedia.org/w/api.php?action=parse&format=json&origin=*&page=${this.state.query}&prop=text`
-    const URL = `https://en.wikipedia.org/w/api.php?action=query&format=json&titles=${this.state.query}&prop=revisions&rvprop=content&origin=*`
-    const BASE_URL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&generator=search&origin=*&gsrsearch=';
+    const URL = `https://en.wikipedia.org/w/api.php?action=query&format=json&titles=${this.state.query}&prop=revisions&rvprop=content&origin=*`;
+    const BASE_URL =
+      'https://en.wikipedia.org/w/api.php?action=query&format=json&generator=search&origin=*&gsrsearch=';
     let FETCH_URL = `${BASE_URL}${this.state.query}`;
 
-      // fetch(URL, {
-       
-      //   method: 'GET'
-      // })
-      //   .then(response => {
-      //     console.log('response: ', response);
-      //   });
-    
-        
+    // fetch(URL, {
+
+    //   method: 'GET'
+    // })
+    //   .then(response => {
+    //     console.log('response: ', response);
+    //   });
+
     axios
       .get(URL)
       .then(function(response) {
@@ -43,8 +43,8 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <div className="app-header">Getting to Philosophy</div>
         <div className="app-body">
+          <div className="app-header">Getting to Philosophy</div>
           <input
             className="search-bar"
             type="text"

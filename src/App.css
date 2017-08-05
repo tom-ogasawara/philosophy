@@ -3,15 +3,15 @@
     background: #ddd;
     border-bottom: 250px solid #0645ad;
     height: calc(100vh - 250px);
+    display: flex;
+    justify-content: space-around;
+    align-items: space-around;
 }
 
 .app-header {
-    height: 100px;
-    display: flex;
-    flex-direction: column;
     font-size: 40px;
     color: #0645ad;
-    justify-content: flex-end;
+    /* justify-content: flex-end; */
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
 }
 
@@ -21,10 +21,11 @@
     background: #fff;
     border-radius: 3px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18), 0 1px 2px rgba(0, 0, 0, 0.24);
-    margin: 0 20%;
     height: 400px;
-    padding: 30px;
+    padding: 30px; 
+    width: 60%;
     align-items: center;
+    align-self: center;
 }
 
 .search-bar {
