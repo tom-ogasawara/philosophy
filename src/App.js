@@ -13,7 +13,7 @@ class App extends Component {
 
   search() {
     // const URL = `https://en.wikipedia.org/w/api.php?action=parse&format=json&origin=*&page=${this.state.query}&prop=text`
-    const URL = `https://en.wikipedia.org/w/api.php?action=query&format=json&titles=${this.state.query}&prop=revisions&rvprop=content&origin=*`;
+    const URL = `https://en.wikipedia.org/w/api.php?action=parse&page=${this.state.query}&prop=text&origin=*&format=json`;
     const BASE_URL =
       'https://en.wikipedia.org/w/api.php?action=query&format=json&generator=search&origin=*&gsrsearch=';
     let FETCH_URL = `${BASE_URL}${this.state.query}`;
