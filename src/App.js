@@ -12,32 +12,21 @@ class App extends Component {
   }
 
   search() {
-    // const URL = `https://en.wikipedia.org/w/api.php?action=parse&format=json&origin=*&page=${this.state.query}&prop=text`
     const URL = `https://en.wikipedia.org/w/api.php?action=parse&page=${this.state.query}&prop=text&origin=*&format=json`;
-    const BASE_URL =
-      'https://en.wikipedia.org/w/api.php?action=query&format=json&generator=search&origin=*&gsrsearch=';
-    let FETCH_URL = `${BASE_URL}${this.state.query}`;
-
-    // fetch(URL, {
-
-    //   method: 'GET'
-    // })
-    //   .then(response => {
-    //     console.log('response: ', response);
-    //   });
+    let inLink = false;
+    let linkComplete = false;
+    let link = [];
 
     axios
       .get(URL)
-      .then(function(response) {
-        // console.log('response: ', response);
-        if (response.data) {
-          let articleBody = response.request.response;
-          console.log('articleBody: ', articleBody);
-        }
+      .then(response => {
+        const textBody = Object.values(response.data.parse.text)[0];
+        console.log('textBody: ', textBody);
       })
       .catch(function(error) {
         console.log('error: ', error);
       });
+
   }
 
   render() {
