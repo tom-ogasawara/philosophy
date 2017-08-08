@@ -7,26 +7,54 @@ class App extends Component {
     super(props);
 
     this.state = {
-      query: ''
+      query: '',
+      textBody: '',
+      stepsTaken: 0,
+      pathFound: false
     };
   }
 
-  search() {
+  searchWiki() {
     const URL = `https://en.wikipedia.org/w/api.php?action=parse&page=${this.state.query}&prop=text&origin=*&format=json`;
-    let inLink = false;
-    let linkComplete = false;
-    let link = [];
 
     axios
       .get(URL)
       .then(response => {
         const textBody = Object.values(response.data.parse.text)[0];
-        console.log('textBody: ', textBody);
+        this.setState({ textBody });
+        this.parseWiki();
       })
-      .catch(function(error) {
+      .catch(error => {
         console.log('error: ', error);
       });
+  }
 
+  parseWiki() {
+    const { pathFound, textBody } = this.state;
+    let inBody = false;
+    let inLink = false;
+    let linkComplete = false;
+    let link = '';
+    
+    // while (pathFound === false) {
+    //   for (let i = 0; i++; i < textBody.length) {
+    //     if (textBody[i] === "<" && textBody[i + 1] === "p") {
+    //       inBody = true;
+    //     }
+    //     if (inBody && textBody[i] === '<' && textBody[i + 1] === "a") {
+    //       inLink = true;
+    //     }
+    //     if (inLink) {
+
+    //     }
+    //   }
+    // break;
+    // }
+    const parseStart = textBody.indexOf('<p>');  
+    const parseStop = textBody.indexOf('</p>');
+    const mainBody = textBody.slice(parseStart, parseStop);
+    console.log('mainBody: ', mainBody);
+    
   }
 
   render() {
@@ -44,12 +72,12 @@ class App extends Component {
             }}
             onKeyPress={event => {
               if (event.key === 'Enter') {
-                this.search();
+                this.searchWiki();
               }
             }}
           />
-          <button className="search-button" onClick={() => this.search()}>
-            search
+          <button className="search-button" onClick={() => this.searchWiki()}>
+            Search
           </button>
         </div>
       </div>
