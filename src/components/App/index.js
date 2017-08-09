@@ -18,6 +18,8 @@ class App extends Component {
       invalidSearch: false,
       visitedLinks: []
     };
+
+    // this.extractContent = this.extractContent.bind(this);
   }
 
   beginSearch() {
@@ -72,20 +74,122 @@ class App extends Component {
     }
   }
 
-  parseWiki() {
-    const { pathFound, textBody, stepsTaken, visitedLinks } = this.state;
-    let link = '';
+  extractContent() {
+    const textBody = this.state.textBody;
+    let extractedBody = '';
+    let inItalics = false;
+    let inDiv = false;
+    let inLink = false;
+    // let inParens = false;
+    let parensCount = 0;
 
-    // Make sure you're in the main body of the article
-    let bodyStart = textBody.indexOf('<p>');
-    let mainBody = textBody.slice(bodyStart);
+    for (let i = 0; i < textBody.length; i++) {
+    // for (let i = 0; i < 5000; i++) {
+      // Check if you're between <i></i> tags
+      if (
+        textBody[i] === '<' &&
+        textBody[i + 1] === 'i' &&
+        textBody[i + 2] === '>'
+      ) {
+        inItalics = true;
+      }
+      if (
+        textBody[i] === '<' &&
+        textBody[i + 1] === '/' &&
+        textBody[i + 2] === 'i' &&
+        textBody[i + 3] === '>'
+      ) {
+        inItalics = false;
+      }
+      // Check if you're between <div></div> tags
+      if (
+        textBody[i] === '<' &&
+        textBody[i + 1] === 'd' &&
+        textBody[i + 2] === 'i' &&
+        textBody[i + 3] === 'v'
+      ) {
+        inDiv = true;
+      }
+      if (
+        textBody[i] === '(<)' &&
+        textBody[i + 1] === '/' &&
+        textBody[i + 2] === 'd' &&
+        textBody[i + 3] === 'i' &&
+        textBody[i + 4] === 'v' &&
+        textBody[i + 5] === '>'
+      ) {
+        inDiv = false;
+      }
+      // Check if you're between <a></a> tags
+      if (
+        textBody[i] === '<' &&
+        textBody[i + 1] === 'a' &&
+        textBody[i + 2] === ' '
+      ) {
+        inLink = true;
+      }
+      if (
+        textBody[i] === '(<)' &&
+        textBody[i + 1] === '/' &&
+        textBody[i + 2] === 'a' &&
+        textBody[i + 3] === '>'
+      ) {
+        inLink = false;
+      }
+      // Check if you're between parentheses
+      if (textBody[i] === '(' && !inLink) {
+        parensCount++;
+      }
+      if (textBody[i] === ')' && !inLink) {
+        parensCount--;
+      }
 
+      // Extract desired text
+      if (!inItalics) {
+        extractedBody += textBody[i];
+      }
+    }
+
+    return extractedBody;
+  }
+
+  findLink(mainBody) {
     // Find the first link in the main body
     const linkStart = mainBody.indexOf('<a href="/wiki/');
     const linkStop = mainBody.indexOf('</a>');
-    const fullLink = mainBody.slice(linkStart + 15, linkStop + 4);
+    let fullLink = mainBody.slice(linkStart + 15, linkStop + 4);
+    return fullLink;
+  }
+
+  parseWiki() {
+    const { pathFound, textBody, stepsTaken, visitedLinks } = this.state;
+    const extractedBody = this.extractContent();
+    let link = '';
+
+    // Make sure you're in the main body of the article
+    let bodyStart = extractedBody.indexOf('<p>');
+    let mainBody = extractedBody.slice(bodyStart);
+
+    // Ignore parentheses and italics
+    // const firstParens = mainBody.indexOf(")");
+    // const firstItalics = mainBody.indexOf('</i>');
+
+    // Find the first link in the main body
+    let linkStart = mainBody.indexOf('<a href="/wiki/');
+    let linkStop = mainBody.indexOf('</a>');
+    let fullLink = mainBody.slice(linkStart + 15, linkStop + 4);
+
+    // if (fullLink.includes(':')) {
+    //   mainBody = mainBody.slice(linkStop + 4);
+    //   console.log('mainBody: ', mainBody);
+    //   linkStart = mainBody.indexOf('<a href="/wiki/');
+    //   linkStop = mainBody.indexOf('</a>');
+    //   fullLink = mainBody.slice(linkStart + 15, linkStop + 4);
+    //   console.log('fullLink: ', fullLink);
+    // }
 
     // Find the title of the link
+    console.log('fullLink: ', fullLink);
     for (let i = 0; i < fullLink.length; i++) {
       if (fullLink[i] === '"') {
         break;
@@ -93,14 +197,12 @@ class App extends Component {
       link += fullLink[i];
     }
 
-    // Format links that have multiple words
-    link.replace(' ', '_');
-
     // Record our progress
     this.setState({
       query: link,
       stepsTaken: stepsTaken + 1
     });
+    // console.log('extractedBody: ', extractedBody);
     this.searchWiki();
   }
 

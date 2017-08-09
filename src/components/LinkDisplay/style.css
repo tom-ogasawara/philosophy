@@ -4,7 +4,7 @@
     display: -webkit-flex; /* Safari */
     -webkit-flex-wrap: wrap; /* Safari 6.1+ */
     justify-content: center;
-    max-height: 270px;
+    max-height: 250px;
     overflow-y: auto;
 }
 
