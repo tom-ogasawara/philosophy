@@ -35,7 +35,7 @@ class App extends Component {
       return;
 
       //  Give up if we don't find it in 100 steps
-    } else if (stepsTaken === 20) {
+    } else if (stepsTaken === 50) {
       this.setState({ giveUp: true });
       return;
 
@@ -94,9 +94,8 @@ class App extends Component {
   }
 
   render() {
-    const { pathFound, stepsTaken, giveUp } = this.state;
-    const infoStatus = pathFound || giveUp ? 'info-container' : 'hidden';
-    console.log('this.state.visitedLinks: ', this.state.visitedLinks);
+    const { pathFound, stepsTaken, giveUp, visitedLinks } = this.state;
+
     return (
       <div className="app">
         <div className="app-body">
@@ -117,13 +116,14 @@ class App extends Component {
           <button className="search-button" onClick={() => this.searchWiki()}>
             Search
           </button>
-        </div>
-        <div className={infoStatus}>
+        <div className="info-container">
           <ResultDisplay
             pathFound={pathFound}
             stepsTaken={stepsTaken}
             giveUp={giveUp}
+            visitedLinks={visitedLinks}
           />
+        </div>
         </div>
       </div>
     );
