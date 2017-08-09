@@ -1,0 +1,16 @@
+.result-info {
+    color: #333;
+    margin: 20px;
+}
+
+.success {
+    color: blue;
+}
+
+.warning {
+    color: #e02e0b;
+}
+
+.hidden {
+    display: none;
+}

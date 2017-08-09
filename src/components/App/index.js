@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import './style.css';
 import axios from 'axios';
+
 import ResultDisplay from '../ResultDisplay';
+import './style.css';
 
 class App extends Component {
   constructor(props) {
@@ -14,8 +15,24 @@ class App extends Component {
       pathFound: false,
       giveUp: false,
       looping: false,
+      invalidSearch: false,
       visitedLinks: []
     };
+  }
+
+  beginSearch() {
+    // Reset everything to its original state
+    this.setState({
+      pathFound: false,
+      stepsTaken: 0,
+      giveUp: false,
+      looping: false,
+      invalidSearch: false,
+      visitedLinks: []
+    });
+
+    // Begin the actual search
+    this.searchWiki();
   }
 
   searchWiki() {
@@ -31,7 +48,7 @@ class App extends Component {
 
       // Check if we're stuck in an infinite loop
     } else if (visitedLinks.includes(query)) {
-      this.setState({ looping: true, giveUp: true });
+      this.setState({ looping: true });
       return;
 
       //  Give up if we don't find it in 100 steps
@@ -51,6 +68,7 @@ class App extends Component {
           this.parseWiki();
         })
         .catch(error => {
+          this.setState({ invalidSearch: true });
           console.log('error: ', error);
         });
     }
@@ -58,7 +76,7 @@ class App extends Component {
 
   parseWiki() {
     const { pathFound, textBody, stepsTaken, visitedLinks } = this.state;
-    
+
     let link = '';
 
     // Make sure you're in the main body of the article
@@ -84,7 +102,7 @@ class App extends Component {
     link.replace(' ', '_');
 
     // Record our progress
-    
+
     this.setState({
       query: link,
       stepsTaken: stepsTaken + 1
@@ -94,7 +112,14 @@ class App extends Component {
   }
 
   render() {
-    const { pathFound, stepsTaken, giveUp, visitedLinks } = this.state;
+    const {
+      pathFound,
+      stepsTaken,
+      giveUp,
+      visitedLinks,
+      looping,
+      invalidSearch
+    } = this.state;
 
     return (
       <div className="app">
@@ -107,23 +132,24 @@ class App extends Component {
             onChange={event => {
               this.setState({ query: event.target.value });
             }}
+            value={this.state.query}
             onKeyPress={event => {
               if (event.key === 'Enter') {
-                this.searchWiki();
+                this.beginSearch();
               }
             }}
           />
-          <button className="search-button" onClick={() => this.searchWiki()}>
+          <button className="search-button" onClick={() => this.beginSearch()}>
             Search
           </button>
-        <div className="info-container">
           <ResultDisplay
             pathFound={pathFound}
             stepsTaken={stepsTaken}
             giveUp={giveUp}
             visitedLinks={visitedLinks}
+            looping={looping}
+            invalidSearch={invalidSearch}
           />
-        </div>
         </div>
       </div>
     );
@@ -131,5 +157,3 @@ class App extends Component {
 }
 
 export default App;
-
-//  value={this.state.query}

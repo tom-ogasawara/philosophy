@@ -12,7 +12,7 @@ class LinkDisplay extends Component {
     return visitedLinks.map((link, i) => {
       return (
         <div className="link-tile" key={i}>
-          {`${i} ${link}`}
+          {`${i + 1} ${link}`}
         </div>
       );
     });
