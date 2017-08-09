@@ -13,8 +13,8 @@ class App extends Component {
       textBody: '',
       stepsTaken: 0,
       pathFound: false,
-      giveUp: false,
       looping: false,
+      giveUp: false,
       invalidSearch: false,
       visitedLinks: []
     };
@@ -25,8 +25,8 @@ class App extends Component {
     this.setState({
       pathFound: false,
       stepsTaken: 0,
-      giveUp: false,
       looping: false,
+      giveUp: false,
       invalidSearch: false,
       visitedLinks: []
     });
@@ -38,7 +38,6 @@ class App extends Component {
   searchWiki() {
     const { query, stepsTaken, visitedLinks } = this.state;
     const linkArray = visitedLinks;
-    // console.log('visitedLinks: ', visitedLinks);
     const URL = `https://en.wikipedia.org/w/api.php?action=parse&page=${query}&prop=text&origin=*&format=json`;
 
     // Check whether we found a path to philosophy
@@ -51,7 +50,7 @@ class App extends Component {
       this.setState({ looping: true });
       return;
 
-      //  Give up if we don't find it in 100 steps
+      //  Give up if we don't find it after 50 steps
     } else if (stepsTaken === 50) {
       this.setState({ giveUp: true });
       return;
@@ -61,7 +60,6 @@ class App extends Component {
       axios
         .get(URL)
         .then(response => {
-          // console.log('response: ', response);
           const textBody = Object.values(response.data.parse.text)[0];
           linkArray.push(query);
           this.setState({ textBody, visitedLinks: linkArray });
@@ -76,7 +74,6 @@ class App extends Component {
 
   parseWiki() {
     const { pathFound, textBody, stepsTaken, visitedLinks } = this.state;
-
     let link = '';
 
     // Make sure you're in the main body of the article
@@ -86,11 +83,9 @@ class App extends Component {
     // Find the first link in the main body
     const linkStart = mainBody.indexOf('<a href="/wiki/');
     const linkStop = mainBody.indexOf('</a>');
-    const firstParens = mainBody.indexOf(')');
     const fullLink = mainBody.slice(linkStart + 15, linkStop + 4);
 
     // Find the title of the link
-    const titleStart = fullLink.indexOf('title=');
     for (let i = 0; i < fullLink.length; i++) {
       if (fullLink[i] === '"') {
         break;
@@ -102,12 +97,10 @@ class App extends Component {
     link.replace(' ', '_');
 
     // Record our progress
-
     this.setState({
       query: link,
       stepsTaken: stepsTaken + 1
     });
-    // console.log('link: ', link);
     this.searchWiki();
   }
 
@@ -124,7 +117,7 @@ class App extends Component {
     return (
       <div className="app">
         <div className="app-body">
-          <div className="app-header">Path to Philosophy</div>
+          <div className="app-title">Path to Philosophy</div>
           <input
             className="search-bar"
             type="text"

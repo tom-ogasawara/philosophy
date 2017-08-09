@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
+
 import './style.css';
 
 class LinkDisplay extends Component {
-  constructor(props) {
-    super(props);
-
-    this.renderLinks = this.renderLinks.bind(this);
-  }
-
   renderLinks(visitedLinks) {
+    // Map through the links and display each one
     return visitedLinks.map((link, i) => {
       return (
         <div className="link-tile" key={i}>
@@ -20,7 +16,7 @@ class LinkDisplay extends Component {
 
   render() {
     const { visitedLinks } = this.props;
-    console.log('visitedLinks: ', visitedLinks);
+
     return (
       <div className="link-container">
         {this.renderLinks(visitedLinks)}
