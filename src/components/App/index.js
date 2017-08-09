@@ -78,13 +78,12 @@ class App extends Component {
     const textBody = this.state.textBody;
     let extractedBody = '';
     let inItalics = false;
-    let inDiv = false;
-    let inLink = false;
+    let inTable = false;
+    // let inLink = false;
     // let inParens = false;
-    let parensCount = 0;
+    // let parensCount = 0;
 
     for (let i = 0; i < textBody.length; i++) {
-    // for (let i = 0; i < 5000; i++) {
       // Check if you're between <i></i> tags
       if (
         textBody[i] === '<' &&
@@ -101,51 +100,55 @@ class App extends Component {
       ) {
         inItalics = false;
       }
-      // Check if you're between <div></div> tags
+
+      // Check if you're between <table></table> tags
       if (
         textBody[i] === '<' &&
-        textBody[i + 1] === 'd' &&
-        textBody[i + 2] === 'i' &&
-        textBody[i + 3] === 'v'
-      ) {
-        inDiv = true;
-      }
-      if (
-        textBody[i] === '(<)' &&
-        textBody[i + 1] === '/' &&
-        textBody[i + 2] === 'd' &&
-        textBody[i + 3] === 'i' &&
-        textBody[i + 4] === 'v' &&
-        textBody[i + 5] === '>'
-      ) {
-        inDiv = false;
-      }
-      // Check if you're between <a></a> tags
-      if (
-        textBody[i] === '<' &&
-        textBody[i + 1] === 'a' &&
-        textBody[i + 2] === ' '
-      ) {
-        inLink = true;
-      }
-      if (
-        textBody[i] === '(<)' &&
-        textBody[i + 1] === '/' &&
+        textBody[i + 1] === 't' &&
         textBody[i + 2] === 'a' &&
-        textBody[i + 3] === '>'
+        textBody[i + 3] === 'b' &&
+        textBody[i + 4] === 'l'
       ) {
-        inLink = false;
+        inTable = true;
       }
-      // Check if you're between parentheses
-      if (textBody[i] === '(' && !inLink) {
-        parensCount++;
-      }
-      if (textBody[i] === ')' && !inLink) {
-        parensCount--;
+      if (
+        textBody[i] === '<' &&
+        textBody[i + 1] === '/' &&
+        textBody[i + 2] === 't' &&
+        textBody[i + 3] === 'a' &&
+        textBody[i + 4] === 'b' &&
+        textBody[i + 5] === 'l'
+      ) {
+        inTable = false;
       }
 
+      // Check if you're between <a></a> tags
+      // if (
+      //   textBody[i] === '<' &&
+      //   textBody[i + 1] === 'a' &&
+      //   textBody[i + 2] === ' '
+      // ) {
+      //   inLink = true;
+      // }
+      // if (
+      //   textBody[i] === '(<)' &&
+      //   textBody[i + 1] === '/' &&
+      //   textBody[i + 2] === 'a' &&
+      //   textBody[i + 3] === '>'
+      // ) {
+      //   inLink = false;
+      // }
+
+      // Check if you're between parentheses
+      // if (textBody[i] === '(' && !inLink) {
+      //   parensCount++;
+      // }
+      // if (textBody[i] === ')' && !inLink) {
+      //   parensCount--;
+      // }
+
       // Extract desired text
-      if (!inItalics) {
+      if (!inItalics && !inTable) {
         extractedBody += textBody[i];
       }
     }
@@ -170,26 +173,18 @@ class App extends Component {
     let bodyStart = extractedBody.indexOf('<p>');
     let mainBody = extractedBody.slice(bodyStart);
 
-    // Ignore parentheses and italics
-    // const firstParens = mainBody.indexOf(")");
-    // const firstItalics = mainBody.indexOf('</i>');
-
     // Find the first link in the main body
     let linkStart = mainBody.indexOf('<a href="/wiki/');
-    let linkStop = mainBody.indexOf('</a>');
-    let fullLink = mainBody.slice(linkStart + 15, linkStop + 4);
-
-    // if (fullLink.includes(':')) {
-    //   mainBody = mainBody.slice(linkStop + 4);
-    //   console.log('mainBody: ', mainBody);
-    //   linkStart = mainBody.indexOf('<a href="/wiki/');
-    //   linkStop = mainBody.indexOf('</a>');
-    //   fullLink = mainBody.slice(linkStart + 15, linkStop + 4);
-    //   console.log('fullLink: ', fullLink);
-    // }
+    let fullLink = mainBody.slice(linkStart + 15, linkStart + 100);
+    console.log('fullLink: ', fullLink);
+    if (fullLink.includes(':')) {
+      mainBody = mainBody.slice(linkStart + 25);
+      linkStart = mainBody.indexOf('<a href="/wiki/');
+      fullLink = mainBody.slice(linkStart + 15, linkStart + 100);
+      // console.log('mainBody: ', mainBody)
+    }
 
     // Find the title of the link
-    console.log('fullLink: ', fullLink);
     for (let i = 0; i < fullLink.length; i++) {
       if (fullLink[i] === '"') {
         break;
