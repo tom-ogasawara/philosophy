@@ -22,9 +22,10 @@ class App extends Component {
     // this.extractContent = this.extractContent.bind(this);
   }
 
-  beginSearch() {
+  resetAllFields() {
     // Reset everything to its original state
     this.setState({
+      query: '',
       pathFound: false,
       stepsTaken: 0,
       looping: false,
@@ -32,8 +33,11 @@ class App extends Component {
       invalidSearch: false,
       visitedLinks: []
     });
-    this.setState({ visitedLinks: [] });
+  }
+
+  beginSearch() {
     // Begin the actual search
+    this.resetAllFields();
     this.searchWiki();
   }
 
@@ -253,6 +257,9 @@ class App extends Component {
       if (fullLink[i] === '"') {
         break;
       }
+      if (fullLink[i] === '#') {
+        break;
+      }
       link += fullLink[i];
     }
 
@@ -283,10 +290,10 @@ class App extends Component {
             className="search-bar"
             type="text"
             placeholder="Search Wikipedia"
+            value={this.state.query}
             onChange={event => {
               this.setState({ query: event.target.value });
             }}
-            value={this.state.query}
             onKeyPress={event => {
               if (event.key === 'Enter') {
                 this.beginSearch();
@@ -302,7 +309,7 @@ class App extends Component {
             </button>
             <button
               className="reset button"
-              onClick={() => this.setState({ visitedLinks: [] })}
+              onClick={() => this.resetAllFields()}
             >
               Reset
             </button>
