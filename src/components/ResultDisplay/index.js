@@ -27,7 +27,7 @@ const ResultDisplay = props => {
           Maximum iterations exceeded after {stepsTaken} steps!
         </div>
         <div className={invalidSearch ? 'warning' : 'hidden'}>
-          Invalid search encountered, please try again.
+          Please enter a valid search term.
         </div>
       </div>
     </div>

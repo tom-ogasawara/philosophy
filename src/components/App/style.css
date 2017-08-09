@@ -1,21 +1,15 @@
 .app {
     display: flex;
-    display: -webkit-flex;
-    /* Safari */
+    display: -webkit-flex; /* Safari */
     justify-content: center;
     text-align: center;
     height: calc(100vh - 100px);
     padding: 50px;
-    background: #155ed6;
-    /* For browsers that do not support gradients */
-    background: -webkit-linear-gradient(left top, #155ed6, #04378c);
-    /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(bottom right, #155ed6, #04378c);
-    /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(bottom right, #155ed6, #04378c);
-    /* For Firefox 3.6 to 15 */
-    background: linear-gradient(to bottom right, #155ed6, #04378c);
-    /* Standard syntax */
+    background: #155ed6; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left top, #155ed6, #02296d); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, #155ed6, #02296d); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, #155ed6, #02296d); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, #155ed6, #02296d); /* Standard syntax */
 }
 
 .app-title {
@@ -69,11 +63,11 @@
 }
 
 .search {
-    color: white;
+    color: #fff;
     background: #0645ad;
 }
 
 .reset {
-    background: white;
+    background: #fff;
     color: #333;
 }

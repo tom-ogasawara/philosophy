@@ -7,9 +7,13 @@ class LinkDisplay extends Component {
     // Map through the links and display each one
     return visitedLinks.map((link, i) => {
       return (
-        <div className="link-tile" key={i}>
+        <a
+          href={`https://en.wikipedia.org/wiki/${link}`}
+          className="link-tile"
+          key={i}
+        >
           {`${i + 1} ${link}`}
-        </div>
+        </a>
       );
     });
   }
@@ -26,3 +30,4 @@ class LinkDisplay extends Component {
 }
 
 export default LinkDisplay;
+// https://en.wikipedia.org/wiki/Canis

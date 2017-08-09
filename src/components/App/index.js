@@ -18,8 +18,6 @@ class App extends Component {
       invalidSearch: false,
       visitedLinks: []
     };
-
-    // this.extractContent = this.extractContent.bind(this);
   }
 
   resetAllFields() {
@@ -86,9 +84,6 @@ class App extends Component {
     let inSpan = false;
     let inSup = false;
     let inSmall = false;
-    // let inLink = false;
-    // let inParens = false;
-    // let parensCount = 0;
 
     for (let i = 0; i < textBody.length; i++) {
       // Check if you're between <i></i> tags
@@ -128,6 +123,7 @@ class App extends Component {
       ) {
         inTable = false;
       }
+
       // Check if you're between <small></small> tags
       if (
         textBody[i] === '<' &&
@@ -148,6 +144,7 @@ class App extends Component {
       ) {
         inSmall = false;
       }
+
       // Check if you're between <span></span> tags
       if (
         textBody[i] === '<' &&
@@ -168,6 +165,7 @@ class App extends Component {
       ) {
         inSpan = false;
       }
+
       // Check if you're between <sup></sup> tags
       if (
         textBody[i] === '<' &&
@@ -242,14 +240,11 @@ class App extends Component {
     let linkStart = mainBody.indexOf('<a href="/wiki/');
     let fullLink = mainBody.slice(linkStart + 15, linkStart + 100);
 
-    console.log('fullLink: ', fullLink);
-
+    // Ignore non-mainspace links
     if (fullLink.includes(':')) {
       mainBody = mainBody.slice(linkStart + 25);
       linkStart = mainBody.indexOf('<a href="/wiki/');
       fullLink = mainBody.slice(linkStart + 15, linkStart + 100);
-      console.log('fullLink: ', fullLink);
-      // console.log('mainBody: ', mainBody)
     }
 
     // Find the title of the link
@@ -268,7 +263,6 @@ class App extends Component {
       query: link,
       stepsTaken: stepsTaken + 1
     });
-    // console.log('extractedBody: ', extractedBody);
     this.searchWiki();
   }
 
