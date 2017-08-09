@@ -79,6 +79,9 @@ class App extends Component {
     let extractedBody = '';
     let inItalics = false;
     let inTable = false;
+    let inSpan = false;
+    let inSup = false;
+    let inSmall = false;
     // let inLink = false;
     // let inParens = false;
     // let parensCount = 0;
@@ -121,6 +124,64 @@ class App extends Component {
       ) {
         inTable = false;
       }
+      // Check if you're between <small></small> tags
+      if (
+        textBody[i] === '<' &&
+        textBody[i + 1] === 's' &&
+        textBody[i + 2] === 'm' &&
+        textBody[i + 3] === 'a' &&
+        textBody[i + 4] === 'l'
+      ) {
+        inSmall = true;
+      }
+      if (
+        textBody[i] === '<' &&
+        textBody[i + 1] === '/' &&
+        textBody[i + 2] === 's' &&
+        textBody[i + 3] === 'm' &&
+        textBody[i + 4] === 'a' &&
+        textBody[i + 5] === 'l'
+      ) {
+        inSmall = false;
+      }
+      // Check if you're between <span></span> tags
+      if (
+        textBody[i] === '<' &&
+        textBody[i + 1] === 's' &&
+        textBody[i + 2] === 'p' &&
+        textBody[i + 3] === 'a' &&
+        textBody[i + 4] === 'n'
+      ) {
+        inSpan = true;
+      }
+      if (
+        textBody[i] === '<' &&
+        textBody[i + 1] === '/' &&
+        textBody[i + 2] === 's' &&
+        textBody[i + 3] === 'p' &&
+        textBody[i + 4] === 'a' &&
+        textBody[i + 5] === 'n'
+      ) {
+        inSpan = false;
+      }
+      // Check if you're between <sup></sup> tags
+      if (
+        textBody[i] === '<' &&
+        textBody[i + 1] === 's' &&
+        textBody[i + 2] === 'u' &&
+        textBody[i + 3] === 'p'
+      ) {
+        inSup = true;
+      }
+      if (
+        textBody[i] === '<' &&
+        textBody[i + 1] === '/' &&
+        textBody[i + 2] === 's' &&
+        textBody[i + 3] === 'u' &&
+        textBody[i + 4] === 'p'
+      ) {
+        inSup = false;
+      }
 
       // Check if you're between <a></a> tags
       // if (
@@ -148,7 +209,7 @@ class App extends Component {
       // }
 
       // Extract desired text
-      if (!inItalics && !inTable) {
+      if (!inItalics && !inTable && !inSup && !inSmall && !inSpan) {
         extractedBody += textBody[i];
       }
     }
@@ -176,11 +237,14 @@ class App extends Component {
     // Find the first link in the main body
     let linkStart = mainBody.indexOf('<a href="/wiki/');
     let fullLink = mainBody.slice(linkStart + 15, linkStart + 100);
+
     console.log('fullLink: ', fullLink);
+
     if (fullLink.includes(':')) {
       mainBody = mainBody.slice(linkStart + 25);
       linkStart = mainBody.indexOf('<a href="/wiki/');
       fullLink = mainBody.slice(linkStart + 15, linkStart + 100);
+      console.log('fullLink: ', fullLink);
       // console.log('mainBody: ', mainBody)
     }
 
