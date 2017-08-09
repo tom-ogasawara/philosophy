@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 import axios from 'axios';
+import ResultDisplay from '../ResultDisplay';
 
 class App extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class App extends Component {
       return;
 
     //  Give up if we don't find it in 100 steps
-    } else if (stepsTaken > 100) {
+    } else if (stepsTaken === 100) {
       this.setState({ giveUp: true });
       return;
 
@@ -92,6 +93,7 @@ class App extends Component {
   }
 
   render() {
+    const { pathFound, stepsTaken, giveUp } = this.state;
     return (
       <div className="app">
         <div className="app-body">
@@ -112,6 +114,13 @@ class App extends Component {
           <button className="search-button" onClick={() => this.searchWiki()}>
             Search
           </button>
+          <div className="info-container">
+            <ResultDisplay 
+              pathFound={pathFound}
+              stepsTaken={stepsTaken}
+              giveUp={giveUp}
+            />
+          </div>
         </div>
       </div>
     );
