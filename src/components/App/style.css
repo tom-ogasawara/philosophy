@@ -1,11 +1,10 @@
 .app {
     text-align: center;
-    background: #ddd;
-    background-image: linear-gradient(bottom, #0645ad 50%, #ddd  50%);
-    background-image: -o-linear-gradient(bottom, #0645ad 50%, #ddd  50%);
-    background-image: -moz-linear-gradient(bottom, #0645ad 50%, #ddd  50%);
-    background-image: -webkit-linear-gradient(bottom, #0645ad 50%, #ddd  50%);
-    background-image: -ms-linear-gradient(bottom, #0645ad 50%, #ddd  50%);
+    background: #155ed6; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left top, #155ed6, #04378c); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(bottom right, #155ed6, #04378c); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, #155ed6, #04378c); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to bottom right, #155ed6, #04378c); /* Standard syntax */
     height: calc(100vh - 100px);
     padding: 50px;
     justify-content: center;
@@ -25,9 +24,7 @@
     flex-direction: column;
     background: #fff;
     border-radius: 3px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18), 0 1px 2px rgba(0, 0, 0, 0.24);
-    height: 430px;
-    ;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.28);
     padding: 30px;
     width: 60%;
     align-items: center;
@@ -54,7 +51,4 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
-.info-container {
-
-}
-
+.info-container {}
