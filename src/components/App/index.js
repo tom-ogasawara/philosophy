@@ -32,7 +32,7 @@ class App extends Component {
       invalidSearch: false,
       visitedLinks: []
     });
-
+    this.setState({ visitedLinks: [] });
     // Begin the actual search
     this.searchWiki();
   }
@@ -293,9 +293,20 @@ class App extends Component {
               }
             }}
           />
-          <button className="search-button" onClick={() => this.beginSearch()}>
-            Search
-          </button>
+          <div className="button-group">
+            <button
+              className="search button"
+              onClick={() => this.beginSearch()}
+            >
+              Search
+            </button>
+            <button
+              className="reset button"
+              onClick={() => this.setState({ visitedLinks: [] })}
+            >
+              Reset
+            </button>
+          </div>
           <ResultDisplay
             pathFound={pathFound}
             stepsTaken={stepsTaken}
