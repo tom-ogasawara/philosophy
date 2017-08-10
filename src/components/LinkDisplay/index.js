@@ -12,7 +12,8 @@ class LinkDisplay extends Component {
           className="link-tile"
           key={i}
         >
-          {`${i + 1} ${link}`}
+          <span className="link-number">{i + 1}</span>
+          <span>{link}</span>
         </a>
       );
     });
