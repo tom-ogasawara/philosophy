@@ -15,21 +15,26 @@ const ResultDisplay = props => {
 
   return (
     <div className="result-container">
-      <LinkDisplay visitedLinks={visitedLinks} />
       <div className="result-info">
+        <div className={stepsTaken > 0 && !pathFound && !looping && !giveUp && !invalidSearch ? 'in-progress' : 'hidden'}>
+          Searching for a path...
+        </div>
         <div className={pathFound ? 'success' : 'hidden'}>
           A path was found after {stepsTaken} steps!
         </div>
-        <div className={looping && stepsTaken > 0 ? 'warning' : 'hidden'}>
+        <div
+          className={looping && stepsTaken > 0 ? 'warning' : 'hidden'}
+        >
           Caught in an infinite loop after {stepsTaken} steps!
         </div>
         <div className={giveUp ? 'warning' : 'hidden'}>
-          Maximum iterations exceeded after {stepsTaken} steps!
+          Maximum iterations exceeded after 50 steps!
         </div>
-        <div className={invalidSearch ? 'warning' : 'hidden'}>
+        <div className={invalidSearch && stepsTaken === 0 ? 'warning' : 'hidden'}>
           Please enter a valid search term.
         </div>
       </div>
+      <LinkDisplay visitedLinks={visitedLinks} />
     </div>
   );
 };

@@ -45,7 +45,7 @@ class App extends Component {
     const URL = `https://en.wikipedia.org/w/api.php?action=parse&page=${query}&prop=text&origin=*&format=json`;
 
     // Check whether we found a path to philosophy
-    if (query === 'Philosophy') {
+    if (query.toUpperCase() === 'PHILOSOPHY') {
       this.setState({ pathFound: true });
       return;
 
@@ -185,31 +185,6 @@ class App extends Component {
         inSup = false;
       }
 
-      // Check if you're between <a></a> tags
-      // if (
-      //   textBody[i] === '<' &&
-      //   textBody[i + 1] === 'a' &&
-      //   textBody[i + 2] === ' '
-      // ) {
-      //   inLink = true;
-      // }
-      // if (
-      //   textBody[i] === '(<)' &&
-      //   textBody[i + 1] === '/' &&
-      //   textBody[i + 2] === 'a' &&
-      //   textBody[i + 3] === '>'
-      // ) {
-      //   inLink = false;
-      // }
-
-      // Check if you're between parentheses
-      // if (textBody[i] === '(' && !inLink) {
-      //   parensCount++;
-      // }
-      // if (textBody[i] === ')' && !inLink) {
-      //   parensCount--;
-      // }
-
       // Extract desired text
       if (!inItalics && !inTable && !inSup && !inSmall && !inSpan) {
         extractedBody += textBody[i];
@@ -228,7 +203,7 @@ class App extends Component {
   }
 
   parseWiki() {
-    const { pathFound, textBody, stepsTaken, visitedLinks } = this.state;
+    const stepsTaken = this.state.stepsTaken;
     const extractedBody = this.extractContent();
     let link = '';
 
@@ -308,14 +283,16 @@ class App extends Component {
               Reset
             </button>
           </div>
-          <ResultDisplay
-            pathFound={pathFound}
-            stepsTaken={stepsTaken}
-            giveUp={giveUp}
-            visitedLinks={visitedLinks}
-            looping={looping}
-            invalidSearch={invalidSearch}
-          />
+          <div className="results">
+            <ResultDisplay
+              pathFound={pathFound}
+              stepsTaken={stepsTaken}
+              giveUp={giveUp}
+              visitedLinks={visitedLinks}
+              looping={looping}
+              invalidSearch={invalidSearch}
+            />
+          </div>
         </div>
       </div>
     );
